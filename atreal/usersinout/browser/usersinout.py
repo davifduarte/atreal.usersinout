@@ -56,7 +56,7 @@ class UsersInOut (BrowserView):
             msg = _('Wrong specification of the CSV file. Please correct it and retry.')
             type = 'error'
             IStatusMessage(self.request).addStatusMessage(msg, type=type)
-            return
+            return self.index()
 
         pr = getToolByName(self.context, 'portal_registration')
         pg = getToolByName(self.context, 'portal_groups')
