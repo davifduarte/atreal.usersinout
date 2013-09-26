@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2.2 beta 1
+------------------
+
+* Added Portuguese translaton. [lccruz]
+
+
+
 1.2.2 (2011-11-28)
 ------------------
 
