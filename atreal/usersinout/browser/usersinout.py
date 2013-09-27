@@ -18,6 +18,7 @@ class UsersInOut (BrowserView):
 
     def __call__(self):
         method = self.request.get('REQUEST_METHOD', 'GET')
+        self.catalog = getToolByName(self.context, 'portal_catalog')
         if (method != 'POST') or not int(self.request.form.get('form.submitted', 0)):
             return self.index()
 
@@ -33,6 +34,15 @@ class UsersInOut (BrowserView):
 
         if self.request.form.get('form.button.Export'):
             return self.exportUsers()
+
+    def get_all_cop(self):
+        """ Get all communities
+        """
+        items = []
+        cops = self.catalog(portal_type='CoP')
+        for cop in cops:
+            items.append({'value':cop.UID, 'title':cop.Title})
+        return items
 
     def getCSVTemplate(self):
         """Return a CSV template to use when importing members."""

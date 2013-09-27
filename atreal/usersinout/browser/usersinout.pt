@@ -40,6 +40,29 @@
                  />
 
         <fieldset>
+
+          <legend i18n:translate="">
+            Comunidades
+          </legend>
+           
+          <div class="field">    
+            <label i18n:translate="">Comunidades</label>
+            <div class="formHelp" i18n:translate="">
+                Selecione uma comunidade
+            </div>            
+
+            <select size="1" id="community_insert" name="community_insert">
+                <option selected="selected" value="">Se uma comunidade for selecionada TODOS usuários contidos no arquivo CSV serão inseridos como PARTICIPANTE na respectiva comunidade.</option>
+                <tal:papel tal:repeat="cop view/get_all_cop">
+                    <option value="" tal:attributes="value cop/value" tal:content="cop/title">COP</option>
+                </tal:papel>
+            </select>
+
+          </div>
+
+        </fieldset>
+
+        <fieldset>
           <legend i18n:translate="">
             Import
           </legend>
