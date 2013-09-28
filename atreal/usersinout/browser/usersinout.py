@@ -44,6 +44,20 @@ class UsersInOut (BrowserView):
             items.append({'value':cop.UID, 'title':cop.Title})
         return items
 
+    def insert_user_cop(self,cop_participants):
+        from communities.practice.generics.cache import updateCommunityCache
+        cop = self.request.form.get('community_insert',None)
+        if cop:
+            result = self.catalog(UID=cop)
+            if result:
+                cop = result[0].getObject()
+                for participant in cop_participants:
+                    cop.manage_setLocalRoles(participant,['Participante'])
+                    updateCommunityCache(cop, participant, 'Participante')
+                cop.reindexObjectSecurity()
+                return True
+        return False
+
     def getCSVTemplate(self):
         """Return a CSV template to use when importing members."""
         datafile = self._createCSV([])
@@ -75,6 +89,7 @@ class UsersInOut (BrowserView):
         groupsDict = {}
         invalidLines = []
         validLines = []
+        cop_participants = []
 
         groupsNumber = 0
         for line in reader:
@@ -106,9 +121,14 @@ class UsersInOut (BrowserView):
                         groupsDict[group] = acl.getGroupById(group)
                     groupsDict[group].addMember(username)
                 usersNumber += 1
+
+                cop_participants.append(username)
+
             except:
                 invalidLines.append(line)
                 print "Invalid line: %s" % line
+
+        self.insert_user_cop(cop_participants)
 
         if invalidLines:
             datafile = self._createCSV(invalidLines)
