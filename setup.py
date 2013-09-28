@@ -25,7 +25,6 @@ setup(name='atreal.usersinout',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'communities.practice',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
