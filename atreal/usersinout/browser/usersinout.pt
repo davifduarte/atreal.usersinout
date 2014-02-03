@@ -101,6 +101,35 @@
 
         </fieldset>
 
+        <fieldset>
+          <legend i18n:translate="">
+            Modificar senha
+          </legend>
+           
+          <div class="field">    
+            <label i18n:translate="">Csv file</label>
+            <div class="formHelp" i18n:translate="">
+                O arquivo .CSV deve conter (username e password). Se o campo password for preenchido, o mesmo é utilizado. Se o username contiver @ é utilizado como password o username até o @, senão o username é copiado para password.
+            </div>            
+            <input type="file" name="csv_upload" />
+          </div>
+            
+          <div class="formControls"
+               i18n:domain="plone">
+            
+            <input class="standalone"
+                   type="submit"
+                   value="Import"
+                   name="form.button.Reset"
+                   i18n:attributes="value;"
+                   />
+
+          </div>
+
+        </fieldset>
+
+
+
         <fieldset tal:condition="python:'users_results' in view.request">
           <legend i18n:translate="">
             Results
