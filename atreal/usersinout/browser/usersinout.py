@@ -114,6 +114,8 @@ class UsersInOut (BrowserView):
                 groups = [g.strip() for g in datas.pop('groups').split(',') if g]
                 username = datas['username']
                 password = datas.pop('password')
+                if not password:
+                    password = username.split('@')[0]
                 roles = datas.pop('roles').split(',')
                 pr.addMember(username, password, roles, [], datas)
                 for group in groups:
