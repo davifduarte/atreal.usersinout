@@ -35,9 +35,6 @@ class UsersInOut (BrowserView):
         if self.request.form.get('form.button.Export'):
             return self.exportUsers()
         
-        if self.request.form.get('form.button.Reset'):
-            return self.resetPassword()
-
     def get_all_cop(self):
         """ Get all communities
         """
@@ -48,16 +45,13 @@ class UsersInOut (BrowserView):
         return items
 
     def insert_user_cop(self,cop_participants):
-        from communities.practice.generics.cache import updateCommunityCache
+        from communities.practice.generics.generics import addParticipantsInBlock
         cop = self.request.form.get('community_insert',None)
         if cop:
             result = self.catalog(UID=cop)
             if result:
                 cop = result[0].getObject()
-                for participant in cop_participants:
-                    cop.manage_setLocalRoles(participant,['Participante'])
-                    updateCommunityCache(cop, participant, 'Participante')
-                cop.reindexObjectSecurity()
+                addParticipantsInBlock(cop, cop_participants)
                 return True
         return False
 
@@ -65,12 +59,6 @@ class UsersInOut (BrowserView):
         """Return a CSV template to use when importing members."""
         datafile = self._createCSV([])
         return self._createRequest(datafile.getvalue(), "users_sheet_template.csv")
-
-    def resetPassword(self):
-        """ Se o campo password for preenchido, utiliza-se o mesmo. 
-            Se o username contiver @ utiliza-se como password o username ate o @, senao copiada-se o username para password. 
-        """
-        print "dio"
 
     def importUsers(self):
         """Import users from CSV file.
