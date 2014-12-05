@@ -5,19 +5,18 @@
       lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="atreal.usersinout">
-    
 
 <metal:block metal:fill-slot="top_slot"
              tal:define="dummy python:request.set('disable_border', 1)" />
 
 <body>
-    <div metal:fill-slot="prefs_configlet_main">
+    <div metal:fill-slot="prefs_configlet_main" id="userinout-config" tal:define="eventos view/getVersusEventos">
 
       <h1 class="documentFirstHeading"
           i18n:translate="">
         Users In/Out
       </h1>
-      
+
       <tal:trans i18n:domain="plone">
         <a href=""
           class="link-parent"
@@ -26,11 +25,11 @@
           Up to Site Setup
         </a>
       </tal:trans>
-      
+
       <p class="discreet" i18n:translate="">
           Users import and export as CSV files.
       </p>
-        
+
       <form method="POST" action="#"  enctype="multipart/form-data"
             tal:attributes="action context/@@plone_context_state/current_page_url">
         
@@ -44,12 +43,12 @@
           <legend i18n:translate="">
             Comunidades
           </legend>
-           
+
           <div class="field">    
             <label i18n:translate="">Comunidades</label>
             <div class="formHelp" i18n:translate="">
-                Se uma comunidade for selecionada TODOS usuários contidos no arquivo CSV serão inseridos como PARTICIPANTE na respectiva comunidade.
-            </div>            
+                Se uma comunidade for selecionada TODOS usuários contidos no arquivo CSV serão inseridos como PARTICIPANTE na respectiva comunidade (Opção independente da escolha da opção abaixo).
+            </div>
 
             <select size="1" id="community_insert" name="community_insert">
                 <option selected="selected" value="">Selecione uma comunidade</option>
@@ -63,11 +62,81 @@
         </fieldset>
 
         <fieldset>
+
+          <legend i18n:translate="">
+            VER-SUS
+          </legend>
+
+          <div class="field">
+            <label i18n:translate="">Vivência</label>
+            <div class="formHelp" i18n:translate="">
+                Se uma vivência for selecionada, para cada usuário contido no arquivo CSV será inserido um formulário de cadastro no VER-SUS e uma inscrição na Vivência selecionada.
+            </div>
+
+            <select size="1" id="versus_evento" name="versus_evento">
+                <option selected="selected" value="">Selecione uma Vivência</option>
+                <tal:papel tal:repeat="item eventos/eventos">
+                    <option value="" tal:attributes="value item/value; filter item/filter" tal:content="item/title"></option>
+                </tal:papel>
+            </select>
+
+          </div>
+          <br />
+          <div class="field">
+            <label i18n:translate="">Opção de inserção</label>
+            <div class="formHelp" i18n:translate="">
+                Selecionar status da inscrição.
+            </div>
+
+            <input id="versus_option" type="radio" value="selecionado" name="versus_option">
+                <label for="comunidade">Inscrição com o status 'Selecionado' e link no formulário de inscrição para a comunidade (Obrigatório selecionar comunidade acima)</label>
+            <br />
+            <input id="versus_option" type="radio" value="concluido" name="versus_option">
+                <label for="certificado">Inscrição com o status 'Concluído' e geração de certificado (obrigatório preencher dados do certificado abaixo)</label>
+
+          </div>
+
+          <table class="listing">
+            <tr>
+              <th colspan="2">Dados Certificado</th>
+            </tr>
+            <tr>
+                <td><label for="local">Local</label></td>
+                <td><input type="text" name="local" id="local" value=""></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="periodo">Período</label>
+                </td>
+                <td>
+                    <input type="text" name="periodo" id="periodo" value="">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="carga_horaria">Carga horária</label></td>
+                <td><input type="text" name="carga_horaria" id="carga_horaria" value=""></td>
+            </tr>
+            <tr>
+                <td><label for="papel">Papel</label></td>
+                <td>
+                    <select name="papel" id="papel">
+                      <option selected="selected" value="">Selecione uma papel</option>
+                      <tal:papel tal:repeat="item eventos/papeis">
+                        <option value="" tal:attributes="value item/id; filter item/filter" tal:content="item/nome"></option>
+                      </tal:papel>
+                    </select>
+                 </td>
+            </tr>
+        </table>
+
+        </fieldset>
+
+        <fieldset>
           <legend i18n:translate="">
             Import
           </legend>
-           
-          <div class="field">    
+
+          <div class="field">
             <label i18n:translate="">Csv file</label>
             <div class="formHelp" i18n:translate="">
               Select your CSV file here. Please respect the syntax of the template available
@@ -77,10 +146,10 @@
                   here
                 </a>
               </tal:trans>
-            </div>            
+            </div>
             <input type="file" name="csv_upload" />
           </div>
-            
+
           <div class="formControls"
                i18n:domain="plone">
             
@@ -105,7 +174,7 @@
           <legend i18n:translate="">
             Results
           </legend>
-          
+
           <div class="field">  
               <div class="discreet">
                 <tal:number content="view/request/users_results"/> 
@@ -128,7 +197,7 @@
                         tal:content="view/request/form/users_sheet_errors|nothing">
               </textarea>
             </div>
-            
+
             <div class="formControls">
               <input class="standalone"
                      type="submit"
@@ -137,12 +206,10 @@
                      i18n:attributes="value;"
                      />
             </div>
-            
+
           </tal:errors>
 
         </fieldset>
-
-
 
         <fieldset>
           <legend i18n:translate="">
@@ -173,10 +240,27 @@
 
           </div>
 
-        </fieldset>     
+        </fieldset>
 
         <input tal:replace="structure context/@@authenticator/authenticator" />
       </form>
+       <script>
+                function change_papel() {
+                    var evento = $("#versus_evento option:selected");
+                    $('select[id="papel"]').empty();
+                    $(options_papel).each( function () {
+                        var item = $(this).attr('filter');
+                        if (item == evento.attr('filter') || $(this).val() == '')  {
+                          $('select[id="papel"]').append(jq(this).clone());
+                        }
+                    });
+                }
+                $(document).ready(function(){
+                    options_papel = $('select[id="papel"] option');
+                    change_papel();
+                    $("#versus_evento").change(function(event) { change_papel(); });
+                });
+            </script>
     </div>
 </body>
 
