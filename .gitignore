@@ -6,6 +6,7 @@ _junk.txt
 *.nja
 README.html
 access
+atreal/usersinout/export_certificados/*
 
 ###############################
 .svn
