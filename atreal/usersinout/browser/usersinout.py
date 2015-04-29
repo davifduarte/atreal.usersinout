@@ -82,7 +82,11 @@ class UsersInOut (BrowserView):
         if file_upload is None or not file_upload.filename:
             return
 
-        reader = csv.reader(file_upload)
+        # verify csv delimiter
+        dialect = csv.Sniffer().sniff(file_upload.read(), delimiters=";,")
+        file_upload.seek(0)
+
+        reader = csv.reader(file_upload, dialect)
         header = reader.next()
 
         if header != CSV_HEADER:
@@ -124,11 +128,13 @@ class UsersInOut (BrowserView):
             try:
                 username = datas['username']
 
-                user = pm.searchForMembers(cpf=datas['cpf']) # try to find user by cpf
+                # try to find user by cpf or email
+                user = pm.searchForMembers(cpf=datas['cpf']) or pm.searchForMembers(email=datas['email'])
                 if user:
                     username = user[0].getId()
                 else:
-                    user = pm.getMemberById(username) # try to find user by id
+                    # try to find user by id
+                    user = pm.getMemberById(username)
 
                 if not user:
                     groups = [g.strip() for g in datas.pop('groups').split(',') if g]
