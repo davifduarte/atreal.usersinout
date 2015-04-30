@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="atreal.usersinout">
+
+<head>
+        <title tal:content="template/title">The title</title>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <link rel="stylesheet" href="jquery-ui-1.8.23.custom.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+        <script src="jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+        <script src="autocomplete.jquery-ui.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <select id="community_insert">
+          <option value="">---</option>
+          <option value="1">Solicitado Resumo Expandido</option>
+          <option value="2">Aceito Resumo Simples</option>
+          <option value="3">Aceito Resumo Expandido</option>
+          <option value="4">Publicado Resumo simples</option>
+          <option value="5">Publicado Resumo Expandido</option>
+          <option value="6">Rejeitado</option>
+    </select>
+    <script>
+               
+    $(document).ready(function(){
+        $("#community_insert").combobox();
+    });
+    </script>
+
+</body>

@@ -31,4 +31,10 @@
         layer="atreal.usersinout.interfaces.IUsersInOutLayer"
         />
 
+    <!-- Resource directory -->
+    <browser:resourceDirectory
+        name="atreal.userinout.resource"
+        directory="resource"
+      />
+
 </configure>
