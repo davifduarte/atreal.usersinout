@@ -33,7 +33,7 @@
         }
     </style>
         </metal:style>
-        <metal:javascript fill-slot="javascript_head_slot">
+        <metal:javascript fill-slot="head_slot">
             <script tal:attributes="src python:context.absolute_url() +'/++resource++atreal.userinout.resource/jquery-ui-1.8.23.custom.min.js'"></script>
             <script tal:attributes="src python:context.absolute_url() +'/++resource++atreal.userinout.resource/autocomplete.jquery-ui.js'"></script>
        </metal:javascript>
