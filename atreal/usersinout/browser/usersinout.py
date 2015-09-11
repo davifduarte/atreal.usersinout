@@ -321,6 +321,7 @@ class UsersInOut (BrowserView):
             path = versus_evento.getPath()
             modalidade = participant.get('modalidade')
             estadovivencia = participant.get('estadovivencia', "").strip()
+            regiao_vivencia = participant.get('regiao_vivencia', '').strip()
             portal_type = None
             if modalidade:
                 portal_type_options = {
@@ -336,7 +337,8 @@ class UsersInOut (BrowserView):
             user_inscricao = self.catalog(path={'query':path},
                                           portal_type=portal_type,
                                           Creator=username,
-                                          estadovivencia=estadovivencia,)
+                                          estadovivencia=estadovivencia,
+                                          regiaovivencia=regiao_vivencia,)
             if user_inscricao:
                 return user_inscricao[0].getObject()
             else:
@@ -352,7 +354,7 @@ class UsersInOut (BrowserView):
                 owner = pm.getMemberById(username).getUser()
                 formulario_vivencia.changeOwnership(owner, recursive=False)
                 formulario_vivencia.manage_addLocalRoles(username, ["Owner",])
-                formulario_vivencia.setRegiaovivencia(participant.get('regiao_vivencia', ''))
+                formulario_vivencia.setRegiaovivencia(regiao_vivencia)
                 if portal_type in ['VersusEstudantesFormulario', 'VersusFacilitadoresFormulario']:
                     self._setFormAttr(formulario_vivencia, VERSUS_FORM_VIVENCIA, participant)
                 return formulario_vivencia
