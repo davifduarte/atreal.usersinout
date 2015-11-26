@@ -319,9 +319,9 @@ class UsersInOut (BrowserView):
         if versus_evento:
             versus_evento = self.catalog(UID=versus_evento)[0]
             path = versus_evento.getPath()
-            modalidade = participant.get('modalidade')
-            estadovivencia = participant.get('estadovivencia', "").strip()
-            regiao_vivencia = participant.get('regiao_vivencia', '').strip()
+            modalidade = participant.get('modalidade').decode("utf-8")
+            estadovivencia = participant.get('estadovivencia', "").strip().decode("utf-8")
+            regiao_vivencia = participant.get('regiao_vivencia', '').strip().decode("utf-8")
             portal_type = None
             if modalidade:
                 portal_type_options = {
